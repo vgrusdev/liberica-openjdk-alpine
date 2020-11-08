@@ -1,0 +1,41 @@
+21c21
+<   RTLD=`find /root/dest${GLIBC_PREFIX}/lib -name 'ld64*.so.*'` && [ -x "$RTLD" ] && \
+---
+>   RTLD=`find /root/dest${GLIBC_PREFIX}/lib -name 'ld-linux-*.so.*'` && [ -x "$RTLD" ] && \
+37d36
+< 
+42,47d40
+< RUN apt-get install -yq zlib1g-dev gcc-8 libstdc++6 libgcc-8-dev && \
+<     cd / && \
+<     tar cf - usr/lib/gcc/powerpc64le-linux-gnu/8/libgcc* usr/lib/powerpc64le-linux-gnu/libstdc++* | \
+<               gzip -c > /tmp/glibs.tgz && \
+<     tar cf - lib/powerpc64le-linux-gnu/libz* | gzip -c > /tmp/libz.tgz 
+< 
+53,54c46,47
+< #ARG EXT_GCC_LIBS_URL=https://archive.archlinux.org/packages/g/gcc-libs/gcc-libs-8.3.0-1-x86_64.pkg.tar.xz
+< #ARG EXT_ZLIB_URL=https://archive.archlinux.org/packages/z/zlib/zlib-1%3A1.2.11-3-x86_64.pkg.tar.xz
+---
+> ARG EXT_GCC_LIBS_URL=https://archive.archlinux.org/packages/g/gcc-libs/gcc-libs-8.3.0-1-x86_64.pkg.tar.xz
+> ARG EXT_ZLIB_URL=https://archive.archlinux.org/packages/z/zlib/zlib-1%3A1.2.11-3-x86_64.pkg.tar.xz
+63,64c56,57
+< ARG LIBERICA_VERSION=11.0.9.1
+< ARG LIBERICA_BUILD=1
+---
+> ARG LIBERICA_VERSION=11.0.9
+> ARG LIBERICA_BUILD=12
+66c59
+< ARG LIBERICA_USE_LITE=0
+---
+> ARG LIBERICA_USE_LITE=1
+69,70d61
+< COPY --from=glibc-base /tmp/glibs.tgz /tmp/glibs.tgz
+< COPY --from=glibc-base /tmp/libz.tgz /tmp/libz.tgz
+99,105d89
+<   if [ "$LIBERICA_ARCH" = "ppc64le" ]; then ln -s /lib /lib64 && \
+<   cd /tmp && \
+<   gunzip -c < libz.tgz  | tar xf - && \
+<     cp -dP lib/powerpc64le-linux-gnu/libz.so* "${GLIBC_PREFIX}/lib" && \
+<   gunzip -c < glibs.tgz  | tar xf - && \
+<     cp -dP usr/lib/gcc/powerpc64le-linux-gnu/8/libgcc* usr/lib/powerpc64le-linux-gnu/libstdc++* "${GLIBC_PREFIX}/lib" && \
+<   rm -rf /tmp/glibs.tgz /tmp/libz.tgz /tmp/lib /tmp/usr/lib; fi && \
+
